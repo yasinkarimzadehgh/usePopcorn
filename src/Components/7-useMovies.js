@@ -42,7 +42,6 @@ export function useMovies(query) {
         setError("");
         return;
       }
-      //handleCloseMovie();
       fetchMovies();
 
       return function () {

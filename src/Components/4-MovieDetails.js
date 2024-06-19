@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import StarRating from "./3-StarRating";
 import { Loader } from "../App";
-import { IoMdArrowRoundBack } from "react-icons/io";
 
 //-------------------------------------------------------------------------------------
 
@@ -16,9 +15,10 @@ export function MovieDetails({
   const [userRating, setUserRating] = useState("");
 
   const countRef = useRef(0);
+
   useEffect(
     function () {
-      if (userRating) countRef.current = countRef.current++;
+      if (userRating) countRef.current++;
     },
     [userRating]
   );
@@ -41,6 +41,9 @@ export function MovieDetails({
     Genre: genre,
   } = movie;
 
+  const isTop = imdbRating > 8;
+  console.log(isTop);
+
   function handleAdd() {
     const newWatchedMovie = {
       imdbID: selectedId,
@@ -50,34 +53,20 @@ export function MovieDetails({
       imdbRating: Number(imdbRating),
       runtime: Number(runtime.split(" ").at(0)),
       userRating,
-      countRatingDecision: countRef.current,
+      countRatingDecisions: countRef.current,
     };
+
     onAddWatched(newWatchedMovie);
     onCloseMovie();
   }
 
   useEffect(
     function () {
-      function callback(e) {
-        if (e.code === "Escape") {
-          onCloseMovie();
-        }
-      }
-
-      document.addEventListener("keydown", callback);
-      return function () {
-        document.removeEventListener("keydown", callback);
-      };
-    },
-    [onCloseMovie]
-  );
-
-  //* FECHING API from selected movie :
-  useEffect(
-    function () {
       async function getMovieDetails() {
         setIsLoading(true);
-        const res = await fetch("https://www.omdbapi.com/?apikey=4981bb31");
+        const res = await fetch(
+          `https://www.omdbapi.com/?apikey=4981bb31&i=${selectedId}`
+        );
         const data = await res.json();
         setMovie(data);
         setIsLoading(false);
@@ -91,8 +80,9 @@ export function MovieDetails({
     function () {
       if (!title) return;
       document.title = `Movie | ${title}`;
+
       return function () {
-        document.title = "Popcorn";
+        document.title = "usePopcorn";
       };
     },
     [title]
@@ -106,7 +96,7 @@ export function MovieDetails({
         <>
           <header>
             <button className="btn-back" onClick={onCloseMovie}>
-              <IoMdArrowRoundBack />
+              &larr;
             </button>
             <img src={poster} alt={`Poster of ${movie} movie`} />
             <div className="details-overview">
@@ -139,12 +129,10 @@ export function MovieDetails({
                 </>
               ) : (
                 <p>
-                  You rated this movie {watchedUserRating}
-                  <span>⭐️</span>
+                  You rated with movie {watchedUserRating} <span>⭐️</span>
                 </p>
               )}
             </div>
-
             <p>
               <em>{plot}</em>
             </p>
