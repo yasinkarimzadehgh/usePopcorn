@@ -2,11 +2,6 @@ import { useEffect, useState } from "react";
 
 //-------------------------------------------------------------------------------------
 
-//! API URL key-value from OMDb API : http://www.omdbapi.com/?apikey=${KEY}
-const KEY = "4981bb31";
-
-//-------------------------------------------------------------------------------------
-
 export function useMovies(query) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -22,7 +17,7 @@ export function useMovies(query) {
           setIsLoading(true);
           setError("");
           const res = await fetch(
-            `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`,
+            `http://www.omdbapi.com/?apikey=4981bb31&s=${query}`,
             { signal: controller.signal }
           );
 

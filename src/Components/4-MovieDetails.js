@@ -5,11 +5,6 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 
 //-------------------------------------------------------------------------------------
 
-//! API URL key-value from OMDb API : http://www.omdbapi.com/?apikey=${KEY}
-const KEY = "4981bb31";
-
-//-------------------------------------------------------------------------------------
-
 export function MovieDetails({
   selectedId,
   onCloseMovie,
@@ -82,9 +77,7 @@ export function MovieDetails({
     function () {
       async function getMovieDetails() {
         setIsLoading(true);
-        const res = await fetch(
-          `http://www.omdbapi.com/?apikey=${KEY}&i=${selectedId}`
-        );
+        const res = await fetch("http://www.omdbapi.com/?apikey=4981bb31");
         const data = await res.json();
         setMovie(data);
         setIsLoading(false);
